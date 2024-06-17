@@ -12,8 +12,17 @@ app.use(cors());
 app.use(express.json());
 
 // Set SendGrid API key
-sgMail.setApiKey('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');
+const apiKey = process.env.sendgrid_API_KEY;
+if(typeof apiKey != 'undefined')
+    {
+        sgMail.setApiKey(apiKey);
+    }
 
+else
+{
+    console.log("SENDGRID API KEY NOT SET,mail Server won't send email without valid api key?")
+    return 1;
+}
 // Endpoint to handle email sending
 app.post('/send-email', (req, res) => {
     // Extract data from the request body
